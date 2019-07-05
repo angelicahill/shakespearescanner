@@ -8,6 +8,25 @@ The purpose of this program is to make it easy for a user to search Shakespeare 
 
 This is a MVP of a larger scanner which will scan the entirety of Shakespeare’s works, including his sonnets, and return how many times a word shows up. 
 
+**How to run the program?**
+
+If you would like to run this program yourself in the terminal all you have to do is: 
+- Clone this repository.  
+- Open your terminal and navigate to this directory before running “go run shakespearescanner.go” 
+- The terminal should then display the following: “Please pick a word and then I will tell you how often is shows up in each of the following Shakespeare plays: The Tempest, Hamlet, King Lear, Macbeth, and Romeo and Juliet. Please pick a word...” 
+- Input a word. 
+- The program will run and display something like the following: 
+
+```
+love showed up 12 time(s) in ariel.txt
+ love showed up 67 time(s) in hamlet.txt
+ love showed up 51 time(s) in kinglear.txt
+ love showed up 19 time(s) in macbeth.txt
+ love showed up 135 time(s) in romeo.txt
+
+Time taken to search through plays and give you your results: 660.80686ms
+```
+
 **How would you use this?**
 
 This tool could be extremely useful to students in high school and beyond during their education in English Literature. 
@@ -99,23 +118,4 @@ func processingPlay(userWord string, fileName string, x chan string) {
 ```
 
 A minor part of the program I included is that it tells the user how long it took to scan and get the final values. 
-
-**How to run program?**
-
-If you would like to run this program yourself in the terminal all you have to do is: 
-- Clone this repository.  
-- Open your terminal and navigate to this directory before running “go run shakespearescanner.go” 
-- The terminal should then display the following: “Please pick a word and then I will tell you how often is shows up in each of the following Shakespeare plays: The Tempest, Hamlet, King Lear, Macbeth, and Romeo and Juliet. Please pick a word...” 
-- Input a word. 
-- The program will run and display something like the following: 
-
-```
-love showed up 12 time(s) in ariel.txt
- love showed up 67 time(s) in hamlet.txt
- love showed up 51 time(s) in kinglear.txt
- love showed up 19 time(s) in macbeth.txt
- love showed up 135 time(s) in romeo.txt
-
-Time taken to search through plays and give you your results: 660.80686ms
-```
 
