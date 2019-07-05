@@ -103,9 +103,8 @@ A minor part of the program I included is that it tells the user how long it too
 **How to run program?**
 
 If you would like to run this program yourself in the terminal all you have to do is: 
-- Copy/paste my code into your text editor of choice, save it as a Go file within a directory on your desktop. 
-- Downloading and save the five .txt filed associated with this program in that same directory. 
-- Open your terminal and navigate to this directory before running “go run main.go” 
+- Clone this repository.  
+- Open your terminal and navigate to this directory before running “go run shakespearescanner.go” 
 - The terminal should then display the following: “Please pick a word and then I will tell you how often is shows up in each of the following Shakespeare plays: The Tempest, Hamlet, King Lear, Macbeth, and Romeo and Juliet. Please pick a word...” 
 - Input a word. 
 - The program will run and display something like the following: 
