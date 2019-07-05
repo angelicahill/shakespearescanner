@@ -1,6 +1,6 @@
 # Shakespeare Word Scanner
 
-**What is this program and what is it’s purpose?**
+**What is this program and what is its purpose?**
 
 This program is a Shakespeare word scanner. 
 
