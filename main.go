@@ -50,38 +50,8 @@ func main() {
 			fmt.Println("Sorry we do not currently have that play in our database, please try another play.\n")
 			continue
 		}
-		playString := string(getPlay)
-		playLines := strings.Split(playString, "\n")
-		lastActIndex := 0
-		acts := []string{}
-		for lineIndex, line := range playLines {
-			if line == "ACT I" {
-				continue
-			}
-			findActs := strings.HasPrefix(line, "ACT ")
-			if findActs == true {
-				actNumeral := strings.Fields(line)[1]
-				characters := strings.Split(actNumeral, "")
-				isNotRoman := false
-				for _, character := range characters {
-					if character == "V" || character == "I" || character == "X" {
-					} else {
-						isNotRoman = true
-					}
-				}
-				if isNotRoman == true {
-					continue
-				} else {
-					actLines := playLines[lastActIndex:lineIndex]
-					act := strings.Join(actLines, "\n")
-					acts = append(acts, act)
-				}
-			}
-		}
 
-		lastAct := playLines[lastActIndex:]
-		lastActadd := strings.Join(lastAct, "\n")
-		acts = append(acts, lastActadd)
+		acts := sortingActs(getPlay)
 
 		for actNumber, act := range acts {
 			lowerCaseAct := strings.ToLower(act)
@@ -151,4 +121,40 @@ func printResultingValues(wordCountMap map[string]int) {
 			fmt.Println()
 		}
 	}
+}
+
+func sortingActs(getPlay []byte) []string {
+	playString := string(getPlay)
+	playLines := strings.Split(playString, "\n")
+	lastActIndex := 0
+	acts := []string{}
+	for lineIndex, line := range playLines {
+		if line == "ACT I" {
+			continue
+		}
+		findActs := strings.HasPrefix(line, "ACT ")
+		if findActs == true {
+			actNumeral := strings.Fields(line)[1]
+			characters := strings.Split(actNumeral, "")
+			isNotRoman := false
+			for _, character := range characters {
+				if character == "V" || character == "I" || character == "X" {
+				} else {
+					isNotRoman = true
+				}
+			}
+			if isNotRoman == true {
+				continue
+			} else {
+				actLines := playLines[lastActIndex:lineIndex]
+				act := strings.Join(actLines, "\n")
+				acts = append(acts, act)
+			}
+		}
+	}
+
+	lastAct := playLines[lastActIndex:]
+	lastActadd := strings.Join(lastAct, "\n")
+	acts = append(acts, lastActadd)
+	return acts
 }
