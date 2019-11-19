@@ -17,12 +17,12 @@ func main() {
 	fmt.Println("Hello and welcome to the Shakespeare Scanner.\n This is a tool which allows you to search a Shakespeare play for a word\n and it will tell you both how many times it shows up, as well as where it shows up.\n")
 	for {
 		fmt.Println("Please type the title of the play you would like to search for your word...")
-		Scanner := bufio.NewScanner(os.Stdin)
-		Scanner.Scan()
-		userPlayChoice := strings.ToLower(Scanner.Text())
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		userPlayChoice := strings.ToLower(scanner.Text())
 		fmt.Printf("Great, so you want to search in %s correct?\nPlease type yes or no.\n", userPlayChoice)
-		Scanner.Scan()
-		confirmation := strings.ToLower((Scanner.Text()))
+		scanner.Scan()
+		confirmation := strings.ToLower((scanner.Text()))
 		if confirmation == "yes" {
 			fmt.Printf("Great! Please tell me what word you would like to search for in %s?\n", userPlayChoice)
 		} else if confirmation == "no" {
@@ -31,9 +31,9 @@ func main() {
 			play2ndTry.Scan()
 			confirmation := strings.ToLower((play2ndTry.Text()))
 			fmt.Printf("Let's try this again, is the play you're interested in %s?\nPlease type yes or no.\n", confirmation)
-			Scanner := bufio.NewScanner(os.Stdin)
-			Scanner.Scan()
-			finalCheck := strings.ToLower((Scanner.Text()))
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			finalCheck := strings.ToLower((scanner.Text()))
 			if finalCheck == "yes" {
 				userPlayChoice := confirmation
 				fmt.Printf("Great, now you can tell me what word you want to look for in %s?\n", userPlayChoice)
@@ -42,9 +42,9 @@ func main() {
 				break
 			}
 		}
-		Scanner = bufio.NewScanner(os.Stdin)
-		Scanner.Scan()
-		finalWord := strings.ToLower((Scanner.Text()))
+		scanner = bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		finalWord := strings.ToLower((scanner.Text()))
 		fmt.Printf("Ok so just to confirm the word you want to search is %s.\n Now searching...\n", finalWord)
 		getPlay, err := ioutil.ReadFile(userPlayChoice + ".txt")
 		if err != nil {
@@ -96,9 +96,9 @@ func main() {
 		}
 
 		fmt.Println("Would you like to search for a word in another play, or a different word in this play?\n")
-		Scanner = bufio.NewScanner(os.Stdin)
-		Scanner.Scan()
-		anotherSearch := strings.ToLower((Scanner.Text()))
+		scanner = bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		anotherSearch := strings.ToLower((scanner.Text()))
 		if anotherSearch == "yes" {
 			continue
 		} else if anotherSearch == "no" {
