@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"regexp"
 	"strings"
 )
 
 func main() {
-	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("static"))))
+	// log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("static"))))
 
 	fmt.Println("Hello and welcome to the Shakespeare Scanner.\n This is a tool which allows you to search a Shakespeare play for a word\n and it will tell you both how many times it shows up, as well as where it shows up.\n")
 	for {
@@ -49,7 +48,7 @@ func main() {
 		getPlay, err := ioutil.ReadFile(userPlayChoice + ".txt")
 		if err != nil {
 			fmt.Println("Sorry we do not currently have that play in our database, please try another play.\n")
-			return
+			continue
 		}
 		playString := string(getPlay)
 		playLines := strings.Split(playString, "\n")
