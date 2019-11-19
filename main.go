@@ -5,62 +5,112 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
-	"time"
 )
 
 func main() {
-	fmt.Printf("Please pick a word and then I will tell you how often is shows up in each of the following Shakespeare plays: The Tempest, Hamlet, King Lear, Macbeth, and Romeo and Juliet. Please pick a word...")
-	Scanner := bufio.NewScanner(os.Stdin)
-	Scanner.Scan()
-	userInputWord := Scanner.Text()
-	userInputLowercase := strings.ToLower(userInputWord)
 
-	timeAtStart := time.Now()
-
-	ch1 := make(chan string)
-	ch2 := make(chan string)
-	ch3 := make(chan string)
-	ch4 := make(chan string)
-	ch5 := make(chan string)
-
-	go processingPlay(userInputLowercase, "ariel.txt", ch1)
-	go processingPlay(userInputLowercase, "hamlet.txt", ch2)
-	go processingPlay(userInputLowercase, "kinglear.txt", ch3)
-	go processingPlay(userInputLowercase, "macbeth.txt", ch4)
-	go processingPlay(userInputLowercase, "romeo.txt", ch5)
-
-	tempest := <-ch1
-	hamlet := <-ch2
-	kinglear := <-ch3
-	macbeth := <-ch4
-	romeo := <-ch5
-	fmt.Println(tempest, hamlet, kinglear, macbeth, romeo)
-
-	fmt.Printf("Time taken to search through plays and give you your results: %v\n", time.Since(timeAtStart))
+	for {
+		fmt.Println("Would you like to play around in the terminal or on my website?")
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		userTerminalorWebChoice := strings.ToLower(scanner.Text())
+		if userTerminalorWebChoice == "terminal" {
+			terminalVersion()
+		} else if userTerminalorWebChoice == "website" {
+			websiteVersion()
+		} else {
+			fmt.Println("Please select web or terminal. Thank you!")
+			continue
+		}
+	}
 }
 
-func processingPlay(userWord string, fileName string, x chan string) {
-	thePlay, err := ioutil.ReadFile(fileName)
-	if err != nil {
-		panic(fmt.Errorf("failed to read fule: %s", err))
+func terminalVersion() {
+	fmt.Println("Hello and welcome to the Shakespeare Scanner.\n This is a tool which allows you to search a Shakespeare play for a word\n and it will tell you both how many times it shows up, as well as where it shows up.\n")
+	for {
+		fmt.Println("Please type the title of the play you would like to search for your word...")
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		userPlayChoice := strings.ToLower(scanner.Text())
+		fmt.Printf("Great, so you want to search in %s correct?\nPlease type yes or no.\n", userPlayChoice)
+		scanner.Scan()
+		confirmation := strings.ToLower((scanner.Text()))
+		if confirmation == "yes" {
+			fmt.Printf("Great! Please tell me what word you would like to search for in %s?\n", userPlayChoice)
+		} else if confirmation == "no" {
+			fmt.Println("Ok sorry about that. Please tell me again what play you are looking for...")
+			play2ndTry := bufio.NewScanner(os.Stdin)
+			play2ndTry.Scan()
+			confirmation := strings.ToLower((play2ndTry.Text()))
+			fmt.Printf("Let's try this again, is the play you're interested in %s?\nPlease type yes or no.\n", confirmation)
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			finalCheck := strings.ToLower((scanner.Text()))
+			if finalCheck == "yes" {
+				userPlayChoice := confirmation
+				fmt.Printf("Great, now you can tell me what word you want to look for in %s?\n", userPlayChoice)
+			} else if finalCheck == "no" {
+				fmt.Println("Sorry I'm obviously having a bad day. Please try again later. Goodbye!\n")
+				break
+			}
+		}
+		scanner = bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		finalWord := strings.ToLower((scanner.Text()))
+		fmt.Printf("Ok so just to confirm the word you want to search is %s.\n Now searching...\n", finalWord)
+		getPlay, err := ioutil.ReadFile(userPlayChoice + ".txt")
+		if err != nil {
+			fmt.Println("Sorry we do not currently have that play in our database, please try another play.\n")
+			continue
+		}
+
+		acts := sortingActs(getPlay)
+
+		for actNumber, act := range acts {
+			lowerCaseAct := strings.ToLower(act)
+			reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+			if err != nil {
+				log.Fatal(err)
+			}
+			splitbySpace := reg.ReplaceAllLiteralString(lowerCaseAct, "")
+			wordCount := strings.Count(splitbySpace, finalWord)
+			fmt.Printf("%s showed up in your play %v times in Act %v\n", finalWord, wordCount, actNumber+1)
+		}
+
+		fmt.Println("Would you like to search for a word in another play, or a different word in this play?\n")
+		scanner = bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		anotherSearch := strings.ToLower((scanner.Text()))
+		if anotherSearch == "yes" {
+			continue
+		} else if anotherSearch == "no" {
+			fmt.Println("Ok, hope this can be helpful to you again soon.\n")
+			break
+		}
+
 	}
-	playWords := strings.Fields(string(thePlay))
-	playWordMap := countingWords(playWords)
-	specificWordCount, exists := playWordMap[userWord]
+
+}
+
+func processingAct(userWord string, acts []string) {
+
+	userWordMap := countingWords(acts)
+	specificWordCount, exists := userWordMap[userWord]
 	if exists {
-		x <- fmt.Sprintf("%v showed up %d time(s) in %v\n", userWord, specificWordCount, fileName)
+		fmt.Sprintf("%v showed up %d time(s)\n", userWord, specificWordCount)
 	} else {
-		x <- fmt.Sprintf("sorry %v doesn't exist in %v!\n", userWord, fileName)
+		fmt.Sprintf("sorry %v doesn't exist!\n", userWord)
 	}
 }
 
-func countingWords(playWords []string) map[string]int {
+func countingWords(acts []string) map[string]int {
 	wordCountMap := make(map[string]int)
 
-	for _, word := range playWords {
+	for _, word := range acts {
 		reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 		if err != nil {
 			log.Fatal(err)
@@ -89,4 +139,44 @@ func printResultingValues(wordCountMap map[string]int) {
 			fmt.Println()
 		}
 	}
+}
+
+func sortingActs(getPlay []byte) []string {
+	playString := string(getPlay)
+	playLines := strings.Split(playString, "\n")
+	lastActIndex := 0
+	acts := []string{}
+	for lineIndex, line := range playLines {
+		if line == "ACT I" {
+			continue
+		}
+		findActs := strings.HasPrefix(line, "ACT ")
+		if findActs == true {
+			actNumeral := strings.Fields(line)[1]
+			characters := strings.Split(actNumeral, "")
+			isNotRoman := false
+			for _, character := range characters {
+				if character == "V" || character == "I" || character == "X" {
+				} else {
+					isNotRoman = true
+				}
+			}
+			if isNotRoman == true {
+				continue
+			} else {
+				actLines := playLines[lastActIndex:lineIndex]
+				act := strings.Join(actLines, "\n")
+				acts = append(acts, act)
+			}
+		}
+	}
+
+	lastAct := playLines[lastActIndex:]
+	lastActadd := strings.Join(lastAct, "\n")
+	acts = append(acts, lastActadd)
+	return acts
+}
+
+func websiteVersion() {
+	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("static"))))
 }

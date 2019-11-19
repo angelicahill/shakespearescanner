@@ -4,27 +4,69 @@
 
 This program is a Shakespeare word scanner. 
 
-The purpose of this program is to make it easy for a user to search Shakespeare plays for specific words by giving them the ability to input any word into the terminal and find out quickly and easily how many times it shows up in a group of, in this case for the MVP, five Shakespeare plays: Romeo and Juliet, The Tempest, Macbeth, King Lear and Hamlet.
+The purpose of this program is to make it easy for a user to search Shakespeare plays for specific words by giving them the ability to input any word and find out quickly and easily how many times it shows up in Shakespeare's core portfolio of plays (they must use specific input stylings currently for the program to work as seen below and in key, which can be found on the apps' static site): 
 
-This is a MVP of a larger scanner which will scan the entirety of Shakespeare’s works, including his sonnets, and return how many times a word shows up. 
+### Tragedy
+Antony and Cleopatra = antonyandcleopatra
+Coriolanus = Coriolanus
+Hamlet = Hamlet
+Julius Caesar = juliuscaesar
+King Lear = kinglear
+Macbeth = Macbeth
+Othello = Othello
+Romeo and Juliet = romeoandjuliet
+Timon on Athens = timonofathens
+Titus Andronicus = titusandronicus
+
+### History
+Henry IV, part 1 = henryivpart1
+Henry IV, part 2 = henryivpart2
+Henry V = Henryv
+Henry VI, part 1 = henryvipart1
+Henry VI, part 2 = henryvipart2
+Henry VI, part 3 = henryvipart3
+Henry VIII = henryviii
+King John = kingjohn
+Richard II = richardii
+Richard III = richardiii
+
+### Comedy
+All's Well That Ends Well = allswell
+As You Like It = asyoulikeit
+The Comedy of Errors = comedyoferrors
+Cymbeline = Cymbeline
+Love’s Labours Lost = loveslabourslost
+Measure for Measure = measureformeasure
+The Merry Wives of Windsor = merry wives
+The Merchant of Venice = merchantofvenice
+A Midsummer Night’s Dream = midsummerightsdream
+Much Ado About Nothing = muchadoaboutnothing
+Pericles, Prince of Tyre = Pericles
+Taming of the Shrew = tamingoftheshrew
+The Tempest = tempest
+Troilus and Cressida = troilusandcressida
+Twelfth Night = twelfthnight
+Two Gentlemen of Verona = twogentelman
+Winters Tale = winterstale
+
+***This is a MVP of a larger scanner which will scan the entirety of Shakespeare’s works, including his sonnets, and return how many times a word shows up.** 
 
 **How to run the program?**
 
 If you would like to run this program yourself in the terminal all you have to do is: 
 - Clone this repository.  
-- Open your terminal and navigate to this directory before running “go run shakespearescanner.go” 
-- The terminal should then display the following: “Please pick a word and then I will tell you how often is shows up in each of the following Shakespeare plays: The Tempest, Hamlet, King Lear, Macbeth, and Romeo and Juliet. Please pick a word...” 
-- Input a word. 
+- Open your terminal and navigate to this directory before running “go run main.go” 
+- The terminal should then display the following: “Would you like to play around in the terminal or on my website?” 
+- Input your choice "terminal" or "web" and then you can either input the play name and word in the text fields on the site, or enter then as prompted in the terminal app. 
 - The program will run and display something like the following: 
 
 ```
-love showed up 12 time(s) in ariel.txt
- love showed up 67 time(s) in hamlet.txt
- love showed up 51 time(s) in kinglear.txt
- love showed up 19 time(s) in macbeth.txt
- love showed up 135 time(s) in romeo.txt
+love showed up in your play 13 times in Act 1
+love showed up in your play 29 times in Act 2
+love showed up in your play 60 times in Act 3
+love showed up in your play 74 times in Act 4
+love showed up in your play 84 times in Act 5
 
-Time taken to search through plays and give you your results: 660.80686ms
 ```
 
 **How would you use this?**
@@ -41,13 +83,13 @@ I could go on, there are a wealth of use cases for this simple but fun mini-prog
 
 **Why did I personally write this program?**
 
-I wrote this program in order to practice all I have learnt thus far in relation to writing functions, ranging over text files, creating channels, and running my program concurrently using go routines. 
+I wrote this program in order to practice all I have learnt thus far in relation to writing functions, ranging over text files, creating channels, and running my program concurrently using go routines. It was developed as my skillset has developed.
 
-It also required me to refactor my code a number of times from being an extremely long 200+ line long program to this version at 93 lines which was good practice.
+It also required me to refactor my code a number of times from being an extremely long 200+ line long program to 93 lines, and then longer again as I developed and refined it which was good practice.
 
-I plan to integrate on this MVP in the future as I build out my Go skillset further. 
+I plan to interate on this MVP in the future as I build out my Go skillset further. 
 
-**How does it work?** 
+**How did it work oringially in V1?** 
 
 This program works by scanning through a series of five .txt files concurrently looking for whatever string was input by the user following making that input lowercase and taking out and ignoring any punctuation or spacing as it ranges over the strings. 
 
@@ -118,4 +160,28 @@ func processingPlay(userWord string, fileName string, x chan string) {
 ```
 
 A minor part of the program I included is that it tells the user how long it took to scan and get the final values. 
+
+**How does it now work in V2?** 
+
+Firstly I give the user the option to run and play with the scanner in the terminal or in web: 
+
+```
+for {
+		fmt.Println("Would you like to play around in the terminal or on my website?")
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		userTerminalorWebChoice := strings.ToLower(scanner.Text())
+		if userTerminalorWebChoice == "terminal" {
+			terminalVersion()
+		} else if userTerminalorWebChoice == "website" {
+			websiteVersion()
+		} else {
+			fmt.Println("Please select web or terminal. Thank you!")
+			continue
+		}
+	}
+
+```
+
+Then depending on their choice they either are taken straight into the terminal where they can use the scanner there, or if they select "web" the should navigate to `localhost:8080` where they will be able to input the play and word they are interestd in into text fields and then press the "SUBMIT" button and call the API I will build which will return the values they are interested in. **THIS PART IS THE PART I AM CURRENTLY WORKING ON**
 
