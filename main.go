@@ -5,14 +5,26 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
 )
 
 func main() {
-	// log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("static"))))
 
+	fmt.Println("Would you like to play around in the terminal or on my website?")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	userTerminalorWebChoice := strings.ToLower(scanner.Text())
+	if userTerminalorWebChoice == "terminal" {
+		terminalVersion()
+	} else if userTerminalorWebChoice == "website" {
+		websiteVersion()
+	}
+}
+
+func terminalVersion() {
 	fmt.Println("Hello and welcome to the Shakespeare Scanner.\n This is a tool which allows you to search a Shakespeare play for a word\n and it will tell you both how many times it shows up, as well as where it shows up.\n")
 	for {
 		fmt.Println("Please type the title of the play you would like to search for your word...")
@@ -76,6 +88,7 @@ func main() {
 		}
 
 	}
+
 }
 
 func processingAct(userWord string, acts []string) {
@@ -157,4 +170,8 @@ func sortingActs(getPlay []byte) []string {
 	lastActadd := strings.Join(lastAct, "\n")
 	acts = append(acts, lastActadd)
 	return acts
+}
+
+func websiteVersion() {
+	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("static"))))
 }
