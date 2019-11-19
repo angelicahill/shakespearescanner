@@ -13,14 +13,19 @@ import (
 
 func main() {
 
-	fmt.Println("Would you like to play around in the terminal or on my website?")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	userTerminalorWebChoice := strings.ToLower(scanner.Text())
-	if userTerminalorWebChoice == "terminal" {
-		terminalVersion()
-	} else if userTerminalorWebChoice == "website" {
-		websiteVersion()
+	for {
+		fmt.Println("Would you like to play around in the terminal or on my website?")
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		userTerminalorWebChoice := strings.ToLower(scanner.Text())
+		if userTerminalorWebChoice == "terminal" {
+			terminalVersion()
+		} else if userTerminalorWebChoice == "website" {
+			websiteVersion()
+		} else {
+			fmt.Println("Please select web or terminal. Thank you!")
+			continue
+		}
 	}
 }
 
