@@ -183,5 +183,19 @@ for {
 
 ```
 
-Then depending on their choice they either are taken straight into the terminal where they can use the scanner there, or if they select "web" the should navigate to `localhost:8080` where they will be able to input the play and word they are interestd in into text fields and then press the "SUBMIT" button and call the API I will build which will return the values they are interested in. **THIS PART IS THE PART I AM CURRENTLY WORKING ON**
+Then depending on their choice they either are taken straight into the terminal where they can use the scanner there, or if they select "web" the should navigate to `localhost:8080` where they will be able to input the play and word they are interestd in into text fields and then press the "SUBMIT" button and call the API I will build which will return the values they are interested in. 
+
+**THIS PART IS THE PART I AM CURRENTLY WORKING ON**
+The resources I am looking at are as follows: 
+- https://gowebexamples.com/
+- https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Your_first_HTML_form
+- https://thenewstack.io/make-a-restful-json-api-go/
+- https://medium.com/the-andela-way/build-a-restful-json-api-with-golang-85a83420c9da
+- https://github.com/google/jsonapi
+- https://github.com/Michael-F-Ellis/goht
+- https://meshstudio.io/blog/2017-11-06-serving-html-with-golang/
+- https://www.alexedwards.net/blog/serving-static-sites-with-go
+- https://stackoverflow.com/questions/26559557/how-do-you-serve-a-static-html-file-using-a-go-web-server
+- https://dev.to/hauxe/golang-http-serve-static-files-correctly-2oj2
+- https://tutorialedge.net/golang/creating-simple-web-server-with-golang/
 

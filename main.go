@@ -178,5 +178,49 @@ func sortingActs(getPlay []byte) []string {
 }
 
 func websiteVersion() {
-	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("static"))))
+	http.HandleFunc("/run", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println(r.FormValue("word"))
+		fmt.Println(r.FormValue("play"))
+		//TO DO:
+		//templates - stamp template with results to get to user.
+		//Make an array with the act response and then stamp it into the template/interpalate.
+		//Take Go data and putting it into a HTML file then giving to brownser.
+		//Why CSS styling not working? CSS file for fields.
+	})
+
+	http.Handle("/", http.FileServer(http.Dir("static")))
+
+	log.Fatal(http.ListenAndServe(":8080", nil))
+
 }
+
+//SELECT - PLAYS
+//TEXT FIELD FOR ANY WORD
+
+//TAKING OUT ALL THE PRINT STATMENTS...
+// for {
+// 	//PLAY THEY WANT
+// 	scanner := bufio.NewScanner(os.Stdin)
+// 	scanner.Scan()
+// 	userPlayChoice := strings.ToLower(scanner.Text())
+// 	//ASK FOR WORD
+// 	scanner = bufio.NewScanner(os.Stdin)
+// 	scanner.Scan()
+// 	finalWord := strings.ToLower((scanner.Text()))
+// 	getPlay, err := ioutil.ReadFile(userPlayChoice + ".txt")
+// 	if err != nil {
+// 		continue
+// 	}
+// 	acts := sortingActs(getPlay)
+
+// 	for actNumber, act := range acts {
+// 		lowerCaseAct := strings.ToLower(act)
+// 		reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		splitbySpace := reg.ReplaceAllLiteralString(lowerCaseAct, "")
+// 		wordCount := strings.Count(splitbySpace, finalWord)
+// 		fmt.Printf("%s showed up in your play %v times in Act %v\n", finalWord, wordCount, actNumber+1)
+
+// }
