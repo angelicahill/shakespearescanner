@@ -4,50 +4,7 @@
 
 This program is a Shakespeare word scanner. 
 
-The purpose of this program is to make it easy for a user to search Shakespeare plays for specific words by giving them the ability to input any word and find out quickly and easily how many times it shows up in Shakespeare's core portfolio of plays (they must use specific input stylings currently for the program to work as seen below and in key, which can be found on the apps' static site): 
-
-### Tragedy
-Antony and Cleopatra = antonyandcleopatra
-Coriolanus = Coriolanus
-Hamlet = Hamlet
-Julius Caesar = juliuscaesar
-King Lear = kinglear
-Macbeth = Macbeth
-Othello = Othello
-Romeo and Juliet = romeoandjuliet
-Timon on Athens = timonofathens
-Titus Andronicus = titusandronicus
-
-### History
-Henry IV, part 1 = henryivpart1
-Henry IV, part 2 = henryivpart2
-Henry V = Henryv
-Henry VI, part 1 = henryvipart1
-Henry VI, part 2 = henryvipart2
-Henry VI, part 3 = henryvipart3
-Henry VIII = henryviii
-King John = kingjohn
-Richard II = richardii
-Richard III = richardiii
-
-### Comedy
-All's Well That Ends Well = allswell
-As You Like It = asyoulikeit
-The Comedy of Errors = comedyoferrors
-Cymbeline = Cymbeline
-Love’s Labours Lost = loveslabourslost
-Measure for Measure = measureformeasure
-The Merry Wives of Windsor = merry wives
-The Merchant of Venice = merchantofvenice
-A Midsummer Night’s Dream = midsummerightsdream
-Much Ado About Nothing = muchadoaboutnothing
-Pericles, Prince of Tyre = Pericles
-Taming of the Shrew = tamingoftheshrew
-The Tempest = tempest
-Troilus and Cressida = troilusandcressida
-Twelfth Night = twelfthnight
-Two Gentlemen of Verona = twogentelman
-Winters Tale = winterstale
+The purpose of this program is to make it easy for a user to search Shakespeare plays for specific words by giving them the ability to input any word and find out quickly and easily how many times it shows up in Shakespeare's core portfolio of play. 
 
 ***This is a MVP of a larger scanner which will scan the entirety of Shakespeare’s works, including his sonnets, and return how many times a word shows up.** 
 
