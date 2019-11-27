@@ -13,18 +13,7 @@ The purpose of this program is to make it easy for a user to search Shakespeare 
 If you would like to run this program yourself in the terminal all you have to do is: 
 - Clone this repository.  
 - Open your terminal and navigate to this directory before running “go run main.go” 
-- The terminal should then display the following: “Would you like to play around in the terminal or on my website?” 
-- Input your choice "terminal" or "web" and then you can either input the play name and word in the text fields on the site, or enter then as prompted in the terminal app. 
-- The program will run and display something like the following: 
-
-```
-love showed up in your play 13 times in Act 1
-love showed up in your play 29 times in Act 2
-love showed up in your play 60 times in Act 3
-love showed up in your play 74 times in Act 4
-love showed up in your play 84 times in Act 5
-
-```
+- This will then start the server running and if you navigate to `localhost:8080` you should see the homepage of the app. 
 
 **How would you use this?**
 
@@ -119,28 +108,9 @@ func processingPlay(userWord string, fileName string, x chan string) {
 A minor part of the program I included is that it tells the user how long it took to scan and get the final values. 
 
 **How does it now work in V2?** 
+The basic functionality of the app works. it is now a browser only application. 
 
-Firstly I give the user the option to run and play with the scanner in the terminal or in web: 
-
-```
-for {
-		fmt.Println("Would you like to play around in the terminal or on my website?")
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		userTerminalorWebChoice := strings.ToLower(scanner.Text())
-		if userTerminalorWebChoice == "terminal" {
-			terminalVersion()
-		} else if userTerminalorWebChoice == "website" {
-			websiteVersion()
-		} else {
-			fmt.Println("Please select web or terminal. Thank you!")
-			continue
-		}
-	}
-
-```
-
-Then depending on their choice they either are taken straight into the terminal where they can use the scanner there, or if they select "web" the should navigate to `localhost:8080` where they will be able to input the play and word they are interestd in into text fields and then press the "SUBMIT" button and call the API I will build which will return the values they are interested in. 
+Next step is going to be to do more reading around this area of development, especially focusing on template in Go (https://golang.org/pkg/text/template/) and errors (https://golang.org/pkg/errors/). I also plan to then add more styling to http://localhost:8080/run via a separate html file. 
 
 **THIS PART IS THE PART I AM CURRENTLY WORKING ON**
 The resources I am looking at are as follows: 
