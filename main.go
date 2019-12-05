@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -9,7 +10,19 @@ import (
 	"strings"
 )
 
+type appendixPage struct {
+	Title string
+	Info  string
+}
+
+func appendixHandler(w http.ResponseWriter, r *http.Request) {
+	p := appendixPage{Title: "Appendix", Info: "Information on why I created this app"}
+	t, _ := template.ParseFiles("appendixpage.html")
+	t.Execute(w, p)
+}
+
 func main() {
+	http.HandleFunc("/appendix/", appendixHandler)
 	http.HandleFunc("/run", func(w http.ResponseWriter, r *http.Request) {
 		word := r.FormValue("word")
 		play := r.FormValue("play")
