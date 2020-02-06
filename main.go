@@ -1,75 +1,50 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"strings"
 )
 
-func main() {
-
-	for {
-		fmt.Println("Would you like to play around in the terminal or on my website?")
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		userTerminalorWebChoice := strings.ToLower(scanner.Text())
-		if userTerminalorWebChoice == "terminal" {
-			terminalVersion()
-		} else if userTerminalorWebChoice == "website" {
-			websiteVersion()
-		} else {
-			fmt.Println("Please select web or terminal. Thank you!")
-			continue
-		}
-	}
+type appendixPage struct {
+	Title string
+	Info  string
 }
 
-func terminalVersion() {
-	fmt.Println("Hello and welcome to the Shakespeare Scanner.\n This is a tool which allows you to search a Shakespeare play for a word\n and it will tell you both how many times it shows up, as well as where it shows up.\n")
-	for {
-		fmt.Println("Please type the title of the play you would like to search for your word...")
-		scanner := bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		userPlayChoice := strings.ToLower(scanner.Text())
-		fmt.Printf("Great, so you want to search in %s correct?\nPlease type yes or no.\n", userPlayChoice)
-		scanner.Scan()
-		confirmation := strings.ToLower((scanner.Text()))
-		if confirmation == "yes" {
-			fmt.Printf("Great! Please tell me what word you would like to search for in %s?\n", userPlayChoice)
-		} else if confirmation == "no" {
-			fmt.Println("Ok sorry about that. Please tell me again what play you are looking for...")
-			play2ndTry := bufio.NewScanner(os.Stdin)
-			play2ndTry.Scan()
-			confirmation := strings.ToLower((play2ndTry.Text()))
-			fmt.Printf("Let's try this again, is the play you're interested in %s?\nPlease type yes or no.\n", confirmation)
-			scanner := bufio.NewScanner(os.Stdin)
-			scanner.Scan()
-			finalCheck := strings.ToLower((scanner.Text()))
-			if finalCheck == "yes" {
-				userPlayChoice := confirmation
-				fmt.Printf("Great, now you can tell me what word you want to look for in %s?\n", userPlayChoice)
-			} else if finalCheck == "no" {
-				fmt.Println("Sorry I'm obviously having a bad day. Please try again later. Goodbye!\n")
-				break
-			}
-		}
-		scanner = bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		finalWord := strings.ToLower((scanner.Text()))
-		fmt.Printf("Ok so just to confirm the word you want to search is %s.\n Now searching...\n", finalWord)
-		getPlay, err := ioutil.ReadFile(userPlayChoice + ".txt")
+func appendixHandler(w http.ResponseWriter, r *http.Request) {
+	p := appendixPage{Title: "Appendix", Info: "Information on why I created this app"}
+	t, _ := template.ParseFiles("appendixpage.html")
+	t.Execute(w, p)
+}
+
+func main() {
+	http.HandleFunc("/appendix/", appendixHandler)
+	http.HandleFunc("/run", func(w http.ResponseWriter, r *http.Request) {
+		word := r.FormValue("word")
+		play := r.FormValue("play")
+
+		getPlay, err := ioutil.ReadFile(play + ".txt")
 		if err != nil {
-			fmt.Println("Sorry we do not currently have that play in our database, please try another play.\n")
-			continue
+			return // TODO: CREATE ERROR - tell the user they're wrong, even though the user should never come here.
 		}
-
 		acts := sortingActs(getPlay)
-
+		x := `<!DOCTYPE html>
+		<html>
+			<head>
+				<title>Shakespeare Play Scanner</title>
+				<link rel= "stylesheet" type="text/css" href="shakespearescanner2.css"/>
+			</head>
+		
+			<body>
+		<h1>Result</h1>
+			</body>
+		
+		</html>
+		`
 		for actNumber, act := range acts {
 			lowerCaseAct := strings.ToLower(act)
 			reg, err := regexp.Compile("[^a-zA-Z0-9]+")
@@ -77,27 +52,19 @@ func terminalVersion() {
 				log.Fatal(err)
 			}
 			splitbySpace := reg.ReplaceAllLiteralString(lowerCaseAct, "")
-			wordCount := strings.Count(splitbySpace, finalWord)
-			fmt.Printf("%s showed up in your play %v times in Act %v\n", finalWord, wordCount, actNumber+1)
+			wordCount := strings.Count(splitbySpace, word)
+			answer := fmt.Sprintf("<h5>%s showed up in your play %v times in Act %v</h5>\n", word, wordCount, actNumber+1)
+			x = x + answer
 		}
+		w.Write([]byte(x))
+	})
 
-		fmt.Println("Would you like to search for a word in another play, or a different word in this play?\n")
-		scanner = bufio.NewScanner(os.Stdin)
-		scanner.Scan()
-		anotherSearch := strings.ToLower((scanner.Text()))
-		if anotherSearch == "yes" {
-			continue
-		} else if anotherSearch == "no" {
-			fmt.Println("Ok, hope this can be helpful to you again soon.\n")
-			break
-		}
-
-	}
+	http.Handle("/", http.FileServer(http.Dir("static")))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 
 }
 
 func processingAct(userWord string, acts []string) {
-
 	userWordMap := countingWords(acts)
 	specificWordCount, exists := userWordMap[userWord]
 	if exists {
@@ -175,8 +142,4 @@ func sortingActs(getPlay []byte) []string {
 	lastActadd := strings.Join(lastAct, "\n")
 	acts = append(acts, lastActadd)
 	return acts
-}
-
-func websiteVersion() {
-	log.Fatal(http.ListenAndServe(":8080", http.FileServer(http.Dir("static"))))
 }
