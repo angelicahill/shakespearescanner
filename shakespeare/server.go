@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-//TODO: Add testing using "net/http/httptest" package.
-
 type appendixPage struct {
 	Title string
 	Info  string
@@ -16,7 +14,12 @@ type appendixPage struct {
 
 func AppendixHandler(w http.ResponseWriter, r *http.Request) {
 	p := appendixPage{Title: "Appendix", Info: "Information on why I created this app"}
-	t, _ := template.ParseFiles("appendixpage.html")
+	t, err := template.ParseFiles("../appendixpage.html")
+	if err != nil {
+		w.WriteHeader(500)
+		fmt.Printf("The error is as follow; %v", err)
+		return
+	}
 	t.Execute(w, p)
 }
 
@@ -26,12 +29,16 @@ func Run2(w http.ResponseWriter, r *http.Request) {
 
 	url, ok := plays[play]
 	if !ok {
-		fmt.Println("Play has not been found. Please try another play.")
+		w.WriteHeader(404)
+		w.Write([]byte("<h3>Play not found. Please try another play.</h3>"))
+		fmt.Printf("Play has not been found.")
 		return
 	}
 	p, err := getPlay(url)
 	if err != nil {
-		fmt.Print("Failed to read text file.", err)
+		w.WriteHeader(500)
+		w.Write([]byte("<h3>Failed to read text file. This is an issue on the App side. Please try again later.</h3>"))
+		fmt.Println("File has not been found.")
 		return
 	}
 	x := `<!DOCTYPE html>
@@ -43,24 +50,26 @@ func Run2(w http.ResponseWriter, r *http.Request) {
 	
 		<body>
 	<h1>Result</h1>
+		%s
 		</body>
 	
 	</html>
 	`
+	answers := []string{}
 	word = strings.ToLower(word)
 	for _, act := range p.ACT {
 		wordCount := 0
 		for _, scene := range act.SCENE {
 			for _, speech := range scene.SPEECH {
 				for _, line := range speech.LINE {
-					wordCount = wordCount + strings.Count(strings.ToLower(line.Text), word)
+					wordCount += strings.Count(strings.ToLower(line.Text), word)
 				}
 
 			}
 		}
-		answer := fmt.Sprintf("<h5>%s showed up in your play %v times in %v</h5>\n", word, wordCount, act.TITLE)
-		x = x + answer
+		answer := fmt.Sprintf("<h5>%s showed up in your play %v times in %v</h5>", word, wordCount, act.TITLE)
+		answers = append(answers, answer)
 	}
-
+	x = fmt.Sprintf(x, strings.Join(answers, "\n"))
 	w.Write([]byte(x))
 }

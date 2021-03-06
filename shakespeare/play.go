@@ -89,16 +89,15 @@ var plays = map[string]string{
 func getPlay(playChoice string) (Play, error) {
 	resp, err := http.Get(playChoice)
 	if err != nil {
-		fmt.Print("Failed to read text file.", err)
+		fmt.Print("Failed to read text file. This is an issue on the App side. Please try again later.", err)
 		return Play{}, err
 	}
 	defer resp.Body.Close()
 	var p Play
 	err = xml.NewDecoder(resp.Body).Decode(&p)
 	if err != nil {
-		fmt.Print("Failed to read text file.", err)
+		fmt.Print("Failed to read text file. This is an issue on the App side. Please try again later.", err)
 		return Play{}, err
-
 	}
 	return p, nil
 }
