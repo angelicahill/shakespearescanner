@@ -1,5 +1,13 @@
 # Shakespeare Word Scanner
 
+
+**March 2021: Notes on this Program**
+*This program was originally written as a learning excercise. As part of this process I wrote a README (This!) to practice writing a good README. Since writing the below the program has been re-written, structures, with tests added. It is still a practice App as I continue learning.* 
+
+*The next posible change I will make is to allow user to add a play with a URL themselves and change this into more of a library app, as opposed to just Shakespeare.*
+
+<hr/> 
+
 **What is this program and what is its purpose?**
 
 This program is a Shakespeare word scanner. 
@@ -102,27 +110,3 @@ func processingPlay(userWord string, fileName string, x chan string) {
         x <- fmt.Sprintf("sorry %v doesn't exist in %v!\n", userWord, fileName)
     }
 }
-
-```
-
-A minor part of the program I included is that it tells the user how long it took to scan and get the final values. 
-
-**How does it now work in V2?** 
-The basic functionality of the app works. it is now a browser only application. 
-
-Next step is going to be to do more reading around this area of development, especially focusing on template in Go (https://golang.org/pkg/text/template/) and errors (https://golang.org/pkg/errors/). I also plan to then add more styling to http://localhost:8080/run via a separate html file. 
-
-**THIS PART IS THE PART I AM CURRENTLY WORKING ON**
-The resources I am looking at are as follows: 
-- https://gowebexamples.com/
-- https://developer.mozilla.org/en-US/docs/Learn/HTML/Forms/Your_first_HTML_form
-- https://thenewstack.io/make-a-restful-json-api-go/
-- https://medium.com/the-andela-way/build-a-restful-json-api-with-golang-85a83420c9da
-- https://github.com/google/jsonapi
-- https://github.com/Michael-F-Ellis/goht
-- https://meshstudio.io/blog/2017-11-06-serving-html-with-golang/
-- https://www.alexedwards.net/blog/serving-static-sites-with-go
-- https://stackoverflow.com/questions/26559557/how-do-you-serve-a-static-html-file-using-a-go-web-server
-- https://dev.to/hauxe/golang-http-serve-static-files-correctly-2oj2
-- https://tutorialedge.net/golang/creating-simple-web-server-with-golang/
-
