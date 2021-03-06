@@ -17,6 +17,14 @@
     margin: 0.67em 0;
   }
   
+  
+  h3 {
+    font-size: 4em;
+    font-style: italic;
+    color: darkred;
+    margin: 0.67em 0;
+  }
+
   hr {
     box-sizing: content-box; 
     height: 0; 
@@ -264,3 +272,5 @@ input[type=button], input[type=submit] {
   .image {
       size: 80px;
   }
+
+  
