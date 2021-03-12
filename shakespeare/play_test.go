@@ -1,14 +1,15 @@
 package shakespeare
 
-import "testing"
+import (
+	"github.com/stretchr/testify/require"
+	"testing"
+)
 
 //Think of possible ways to use this here: https://pkg.go.dev/github.com/stretchr/testify/assert
+//assert.Error and assert.NotError
 func TestGetPlayHTTPError(t *testing.T) {
 	_, err := getPlay("")
-
-	if err == nil {
-		t.Error("Expecting Error - error not returned.")
-	}
+	require.Error(t, err, "returned Status 404")
 }
 
 func TestGetPlaySuccess(t *testing.T) {
@@ -17,6 +18,6 @@ func TestGetPlaySuccess(t *testing.T) {
 		t.Error("Unexpected Error.", err)
 	}
 	if p.TITLE == "" {
-		t.Error("Expected Title. Got Empty Value.")
+		t.Error("expected Title. Got Empty Value.")
 	}
 }
