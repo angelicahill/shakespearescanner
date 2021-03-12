@@ -2,9 +2,10 @@ package shakespeare
 
 import "testing"
 
-//To run in terminal - go test -v ./... - will run all test files I have in all sub-directories.
+//Think of possible ways to use this here: https://pkg.go.dev/github.com/stretchr/testify/assert
 func TestGetPlayHTTPError(t *testing.T) {
 	_, err := getPlay("")
+
 	if err == nil {
 		t.Error("Expecting Error - error not returned.")
 	}
