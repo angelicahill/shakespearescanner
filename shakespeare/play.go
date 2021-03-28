@@ -87,7 +87,9 @@ var plays = map[string]string{
 }
 
 func getPlay(playChoice string) (Play, error) {
-	resp, err := http.Get(playChoice)
+	httpClient := http.DefaultClient
+	request, _ := http.NewRequest(http.MethodGet, playChoice, nil)
+	resp, err := httpClient.Do(request)
 	if err != nil {
 		fmt.Print("", err)
 		return Play{}, err
