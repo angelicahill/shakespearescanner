@@ -1,3 +1,4 @@
+// Package shakespeare contains all the functions to process the user selected play information.
 package shakespeare
 
 import (
@@ -6,6 +7,9 @@ import (
 	"net/http"
 )
 
+// See documentation here: https://pkg.go.dev/github.com/angelicahill/shakespearescanner
+
+// Play is a struct organizing the XML files I am using.
 type Play struct {
 	XMLName xml.Name `xml:"PLAY"`
 	Text    string   `xml:",chardata"`

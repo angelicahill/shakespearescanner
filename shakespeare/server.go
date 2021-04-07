@@ -12,6 +12,7 @@ type appendixPage struct {
 	Info  string
 }
 
+// AppendixHandler handles the Appendix page of my App.
 func AppendixHandler(w http.ResponseWriter, r *http.Request) {
 	p := appendixPage{Title: "Appendix", Info: "Information on why I created this app"}
 	t, err := template.ParseFiles("../appendixpage.html")
@@ -20,9 +21,10 @@ func AppendixHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("The error is as follow; %v", err)
 		return
 	}
-	t.Execute(w, p)
+	_ = t.Execute(w, p)
 }
 
+// Run2 takes user input values and processes the information to provide the user with their desired information.
 func Run2(w http.ResponseWriter, r *http.Request) {
 	word := r.FormValue("word")
 	play := r.FormValue("play")
@@ -30,14 +32,16 @@ func Run2(w http.ResponseWriter, r *http.Request) {
 	url, ok := plays[play]
 	if !ok {
 		w.WriteHeader(404)
-		w.Write([]byte("<h3>Play not found. Please try another play.</h3>"))
+		//Explicitly ignoring value with "_ = x"
+		_, _ = w.Write([]byte("<h3>Play not found. Please try another play.</h3>"))
 		fmt.Printf("Play has not been found.")
 		return
 	}
 	p, err := getPlay(url)
+	//TODO: get rid of url peram and re-write with packaging - fixed path not url?!
 	if err != nil {
 		w.WriteHeader(500)
-		w.Write([]byte("<h3>Failed to read text file. This is an issue on the App side. Please try again later.</h3>"))
+		_, _ = w.Write([]byte("<h3>Failed to read text file. This is an issue on the App side. Please try again later.</h3>"))
 		fmt.Println("File has not been found.")
 		return
 	}
@@ -71,5 +75,5 @@ func Run2(w http.ResponseWriter, r *http.Request) {
 		answers = append(answers, answer)
 	}
 	x = fmt.Sprintf(x, strings.Join(answers, "\n"))
-	w.Write([]byte(x))
+	_, _ = w.Write([]byte(x))
 }
